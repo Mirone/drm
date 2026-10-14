@@ -75,8 +75,8 @@ bool Gen11::processKext(KernelPatcher &patcher, size_t index, mach_vm_address_t 
 			{"__ZN31AppleIntelFramebufferController23initPlatformWorkaroundsEv",initPlatformWorkarounds, this->oinitPlatformWorkarounds},
 			{"__ZN31AppleIntelFramebufferController16getOSInformationEv",getOSInformation2, this->ogetOSInformation2},
 			{"__ZN31AppleIntelFramebufferController19getTranscoderOffsetEP14AppleIntelPortj",getTranscoderOffset, this->ogetTranscoderOffset},
-			//{"__ZN31AppleIntelFramebufferController14ReadRegister32Em",raReadRegister32, this->oraReadRegister32},
-			//{"__ZN31AppleIntelFramebufferController15WriteRegister32Emj",raWriteRegister32, this->oraWriteRegister32},
+			{"__ZN31AppleIntelFramebufferController14ReadRegister32Em",raReadRegister32, this->oraReadRegister32},
+			{"__ZN31AppleIntelFramebufferController15WriteRegister32Emj",raWriteRegister32, this->oraWriteRegister32},
 			{"__ZN21AppleIntelFramebuffer25setAttributeForConnectionEijm",wrapSetAttributeForConnection, this->owrapSetAttributeForConnection},
 			{"__ZN21AppleIntelFramebuffer25getAttributeForConnectionEijPm",fgetAttributeForConnection, this->ofgetAttributeForConnection},
 			{"__ZN31AppleIntelFramebufferController13FBMemMgr_InitEv", FBMemMgr_Init,this->oFBMemMgr_Init},
@@ -118,10 +118,10 @@ bool Gen11::processKext(KernelPatcher &patcher, size_t index, mach_vm_address_t 
 			{"__ZN31AppleIntelFramebufferController13probeBootPipeEPbPN17AppleIntelPortHAL3DDIE",probeBootPipe, this->oprobeBootPipe},
 			//{"__ZN19AppleIntelPowerWell4initEP31AppleIntelFramebufferController",AppleIntelPowerWellinit, this->oAppleIntelPowerWellinit},
 			{"__ZN19AppleIntelPowerWell19enableDisplayEngineEv",enableDisplayEngine, this->oenableDisplayEngine},
-			/*{"__ZN19AppleIntelPowerWell23overridePowerWellsStateEb",overridePowerWellsState, this->ooverridePowerWellsState},
+			{"__ZN19AppleIntelPowerWell23overridePowerWellsStateEb",overridePowerWellsState, this->ooverridePowerWellsState},
 			{"__ZN19AppleIntelPowerWell19disablePowerWellAuxEj",disablePowerWellAux, this->odisablePowerWellAux},
 			{"__ZN19AppleIntelPowerWell19disablePowerWellDDIEj",disablePowerWellDDI, this->odisablePowerWellDDI},
-			{"__ZN19AppleIntelPowerWell18disablePowerWellPGEj",disablePowerWellPG, this->odisablePowerWellPG},*/
+			{"__ZN19AppleIntelPowerWell18disablePowerWellPGEj",disablePowerWellPG, this->odisablePowerWellPG},
 			//{"__ZN20IntelFBClientControl11doAttributeEjPmmS0_S0_P25IOExternalMethodArguments",wrapFBClientDoAttribute,	this->orgFBClientDoAttribute},
 			{"__ZN31AppleIntelFramebufferController10processCmdEjPmmS0_S0_",fbprocessCmd, this->ofbprocessCmd},
 			
@@ -135,7 +135,7 @@ bool Gen11::processKext(KernelPatcher &patcher, size_t index, mach_vm_address_t 
 			{"__ZN31AppleIntelFramebufferController9hwSetModeEP21AppleIntelFramebufferP21AppleIntelDisplayPathiPK29IODetailedTimingInformationV2",hwSetMode, this->ohwSetMode},*/
 			
 			
-			{"__ZN21AppleIntelFramebuffer17prepareToExitWakeEv",dovoid},
+			//{"__ZN21AppleIntelFramebuffer17prepareToExitWakeEv",dovoid},
 			/*{"__ZN21AppleIntelFramebuffer18prepareToExitSleepEv",dovoid},
 			{"__ZN21AppleIntelFramebuffer19prepareToEnterSleepEv",dovoid},
 			{"__ZN21AppleIntelFramebuffer18prepareToEnterWakeEv",dovoid},*/
@@ -512,13 +512,21 @@ bool Gen11::processKext(KernelPatcher &patcher, size_t index, mach_vm_address_t 
 			 //{"__ZN20IGHardwareRingBuffer12waitForSpaceEj",waitForSpace, this->owaitForSpace},
 			 //{"__ZN16IntelAccelerator31initHardwareStatusPageRegistersEv",initHardwareStatusPageRegisters, this->oinitHardwareStatusPageRegisters},
 			
-			
-			{"__ZL27ContextStatusBufferValidateRK15IGHwCsExecList5PK28SGfxContextStatusBufferEntry.cold.1",dovoid},
-			{"__ZL27ContextStatusBufferValidateRK15IGHwCsExecList5PK28SGfxContextStatusBufferEntry.cold.2",dovoid},
-			{"__ZN20IGHardwareRingBuffer11waitTimeoutEU13block_pointerFbvE.cold.1",dovoid},
-			 
+			{"__ZN26IGHardwareCommandStreamer526processContextStatusBufferEj",wrapProcessContextStatusBuffer, this->orgProcessContextStatusBuffer},
+
 		 };
 		PANIC_COND(!patcher.routeMultipleLong(index, requests, address, size), "nblue","Failed to route symbols");
+		
+		static const char *handlers[4] = {
+			"__ZN26IGHardwareCommandStreamer522csbProcessIdleToActiveEPK28SGfxContextStatusBufferEntry",
+			"__ZN26IGHardwareCommandStreamer519csbProcessPreemptedEPK28SGfxContextStatusBufferEntry",
+			"__ZN26IGHardwareCommandStreamer523csbProcessElementSwitchEPK28SGfxContextStatusBufferEntry",
+			"__ZN26IGHardwareCommandStreamer522csbProcessActiveToIdleEPK28SGfxContextStatusBufferEntry"
+		};
+
+		for (size_t i = 0; i < arrsize(handlers); i++) {
+			this->csbHandlers[i] = reinterpret_cast<CsbHandler>(patcher.solveSymbol(index, handlers[i], address, size));
+		}
 		
 		//sku = 8
 		static const uint8_t f2[] = {0x41, 0xc1, 0xef, 0x1c, 0x44, 0x89, 0xbb, 0x50, 0x11, 0x00, 0x00};
@@ -783,8 +791,8 @@ uint64_t  Gen11::getOSInformation2(void *that)
 	}
 	
 	//pinfo[p].connectors[1].type=ConnectorDummy;
-	pinfo[p].connectors[0].pipe=1;
-	pinfo[p].connectors[0].flags-=CNConnectorAlwaysConnected;
+	//pinfo[p].connectors[0].pipe=1;
+	//pinfo[p].connectors[0].flags-=CNConnectorAlwaysConnected;
 	
 	
 	OSArray *connectorArray = OSArray::withCapacity(6);
@@ -1096,16 +1104,40 @@ void Gen11::hwSetPanelPowerConfig(void *that, uint param_1)
 
 }
 
+static unsigned long cAddress(unsigned long address)  {
+
+	if ( ((address >= 0x6F000 && address <= 0x6FFFF) || (address >= 0x7F000 && address <= 0x7FFFF))) {
+			return address - 0xF000;
+	}
+	
+	if (address == 0x64040 || address == 0x64044)
+			return address - 0x64040 + 0x60540;
+	
+	if (address >= 0x640F0 && address <= 0x640FC)
+			return address - 0x640F0 + 0x605F0;
+	
+	
+	switch (address) {
+			case 0x164000: return 0x164284;
+			case 0x164004: return 0x164288;
+			case 0x164080: return 0x16428C;
+			case 0x164084: return 0x164290;
+			default: break;
+	}
+	
+	return address;
+}
 
 uint32_t Gen11::raReadRegister32(void *that,unsigned long param_1)
 {
 	if (that==nullptr) that=ccont;
-	auto ret=FunctionCast(raReadRegister32, callback->oraReadRegister32)(that,param_1);
-	return ret;
+	if (kexticl) param_1=cAddress(param_1);
+	return FunctionCast(raReadRegister32, callback->oraReadRegister32)(that,param_1);
 };
 void Gen11::raWriteRegister32(void *that,unsigned long param_1, UInt32 param_2)
 {
 	if (that==nullptr) that=ccont;
+	if (kexticl) param_1=cAddress(param_1);
 	FunctionCast(raWriteRegister32, callback->oraWriteRegister32)( that,param_1,param_2);
 	
 };
@@ -17031,3 +17063,123 @@ uint64_t Gen11::loadFirmware(void *that)
 }
 
 
+static uint16_t tglCsbItemId(void *item) {
+	if (!item)
+		return 0xFFFF;
+	auto context = getMember<uint8_t *>(item, 0);
+	return context ? static_cast<uint16_t>(getMember<uint32_t>(context, 0x7C)) : 0xFFFE;
+}
+
+void Gen11::wrapProcessContextStatusBuffer(void *that, uint32_t flags) {
+	// Offsets are those of IGHardwareCommandStreamer5 in AppleIntelICLGraphics 24.0.5:
+	//   +0x10 IntelAccelerator, +0x28 engine description (byte 0 = IGHwCsType), +0x30 two execlists of two work
+	//   items each, +0x50 index of the active list, +0x68 hardware status page, +0x1C04 read pointer.
+	// Hardware status page (same on Gen11 and Gen12): entries at +0x40, write pointer at +0xBC.
+	// Six entries: the driver leaves GFX_MODE bit 3 clear, and run GA3 showed the hardware wrap from entry 5 to
+	// entry 0 with entries 6-11 never written. Only the layout of an entry is the Gen12 one.
+	static constexpr uint32_t Entries = 6;
+	static constexpr uint32_t IdleId = 0x7FF;
+	static constexpr uint32_t Stored = 0x10; // the read pointer is kept at +0x1C04 as Stored + index
+	auto self = callback;
+	auto cs = static_cast<uint8_t *>(that);
+	auto accel = getMember<uint8_t *>(that, 0x10);
+	auto page = getMember<volatile uint32_t *>(that, 0x68);
+
+
+	// The driver reads the buffer through MMIO when bit 7 of this byte is set; that path is left to the driver
+	if (!page || (accel[0x11C0] & 0x80)) {
+		FunctionCast(wrapProcessContextStatusBuffer, self->orgProcessContextStatusBuffer)(that, flags);
+		return;
+	}
+
+	uint32_t writePointer = page[0xBC / 4];
+	auto &stored = *reinterpret_cast<uint32_t *>(cs + 0x1C04);
+	uint32_t readPointer;
+	if (stored >= Stored && stored < Stored + Entries) {
+		readPointer = stored - Stored;
+	} else {
+		// The driver put its reset value (7) here, in init(), resetOnWake() or processGPUReset(); the last two
+		// also write 7 to the write pointer in the page. After a reset the hardware's next entry
+		// is entry 0. Entries read here are overwritten with all ones, the page starts out zeroed, and the first
+		// entry after a reset is an idle-to-active one with bit 0 set: an entry 0 of zeros or ones is not new.
+		uint32_t lo = page[0x40 / 4], hi = page[0x44 / 4];
+		if ((lo == 0 && hi == 0) || (lo == 0xFFFFFFFF && hi == 0xFFFFFFFF)) {
+			return;
+		}
+		readPointer = Entries - 1;
+	}
+	if (writePointer >= Entries) {
+		return;
+	}
+
+	while (readPointer != writePointer) {
+		uint32_t index = readPointer + 1 == Entries ? 0 : readPointer + 1;
+		volatile uint32_t *entry = page + 0x40 / 4 + index * 2;
+		uint32_t lo = entry[0], hi = entry[1];
+		// The write pointer can be visible before the entry is (i915 csb_read/wa_csb_read, Tiger Lake)
+		for (uint32_t spins = 0; (lo == 0xFFFFFFFF || hi == 0xFFFFFFFF) && spins < 20; spins++) {
+			IODelay(10);
+			lo = entry[0];
+			hi = entry[1];
+		}
+		if (lo == 0xFFFFFFFF || hi == 0xFFFFFFFF) {
+			return;
+		}
+		entry[0] = 0xFFFFFFFF;
+		entry[1] = 0xFFFFFFFF;
+		readPointer = index;
+		stored = Stored + readPointer;
+
+		uint32_t to = (lo >> 15) & 0x7FF, away = (hi >> 15) & 0x7FF, detail = hi & 0xF;
+		bool newQueue = (lo & 1) != 0;
+		auto lists = reinterpret_cast<void **>(cs + 0x30);
+		uint32_t active = getMember<uint32_t>(that, 0x50) & 1;
+		uint32_t active0 = tglCsbItemId(lists[active * 2]), active1 = tglCsbItemId(lists[active * 2 + 1]);
+		uint32_t pending0 = tglCsbItemId(lists[(1 - active) * 2]);
+		// Gen8 event bits: 0 idle to active, 1 preempted, 2 element switch, 3 active to idle, 4 context complete,
+		// 7 wait on semaphore, 15 lite restore
+		uint32_t waitOrDone = detail == 4 ? 0x80 : 0x10;
+		uint8_t action;
+		uint32_t synth[2];
+		bool fits;
+		
+		enum Action : uint8_t {
+			IdleToActive = 1, Preempted = 2, ElementSwitch = 3, ActiveToIdle = 4, // handed to the driver's handler
+			Skipped = 0x10,       // + one of the above: did not fit the driver's execlist state, not handed on
+			BothIdle = 0x20,      // neither context id valid
+			NotWritten = 0x30,    // write pointer moved but the entry still read as all ones after 200 us
+			Passthrough = 0x40,   // driver is in MMIO mode: its own function ran
+			BadPointer = 0x50,    // write pointer above 5
+			AfterReset = 0x60     // driver's read pointer is in its reset state and entry 0 is empty
+		};
+		
+		if (away == IdleId && to == IdleId) {
+			continue;
+		} else if (away == IdleId) {
+			action = IdleToActive;
+			synth[0] = 0x1;
+			synth[1] = to << 5;
+			fits = pending0 == to;
+		} else if (newQueue) {
+			action = Preempted;
+			synth[0] = 0x2 | (to == away ? 0x8000 : (detail == 0 ? 0x10 : (detail == 4 ? 0x80 : 0)));
+			synth[1] = away << 5;
+			fits = active0 == away && pending0 != 0xFFFF;
+		} else if (to != IdleId) {
+			// The handler dereferences the second slot of the active list without a check
+			action = ElementSwitch;
+			synth[0] = 0x4 | waitOrDone;
+			synth[1] = away << 5;
+			fits = active0 == away && active1 == to;
+		} else {
+			action = ActiveToIdle;
+			synth[0] = 0x8 | waitOrDone;
+			synth[1] = away << 5;
+			fits = active0 == away;
+		}
+		if (!fits) {
+			continue;
+		}
+		self->csbHandlers[action - 1](that, synth);
+	}
+}

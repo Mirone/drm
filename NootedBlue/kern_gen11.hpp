@@ -1007,7 +1007,13 @@ public:
 	static int 	fbprocessCmd(void *that,uint param_1,unsigned long *param_2,unsigned long param_3,unsigned long *param_4,unsigned long *param_5);
 	mach_vm_address_t ofbprocessCmd {};
 	
+	mach_vm_address_t orgProcessContextStatusBuffer {};
+	static void wrapProcessContextStatusBuffer(void *that, uint32_t flags);
 
+	using CsbHandler = void (*)(void *, const uint32_t *);
+	CsbHandler csbHandlers[4] {};
+	
+	
 	
 public:
 
