@@ -165,7 +165,7 @@
 		<key>ForceDisableEDRAM</key>
 		<integer>0</integer>
 		<key>GraphicsSchedulerSelect</key>
-		<integer>4</integer>
+		<integer>5</integer>
 		<key>MetalCoalesce</key>
 		<integer>1</integer>
 		<key>MultiForceWakeSelect</key>
@@ -290,7 +290,7 @@
 	<key>IOSourceVersion</key>
 	<string>0.0.0.0.0</string>
 	<key>IOVARendererID</key>
-	<integer>17301568</integer>
+	<integer>17301632</integer>
 	<key>MetalPluginName</key>
 	<string>AppleIntelTGLGraphicsMTLDriver</string>
 </dict>

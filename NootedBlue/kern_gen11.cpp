@@ -58,8 +58,6 @@ void Gen11::init() {
 	lilu.onKextLoadForce(&kextG11HWTe);
 }
 
-
-
 bool Gen11::processKext(KernelPatcher &patcher, size_t index, mach_vm_address_t address, size_t size) {
 	
 	if (kextG11FB.loadIndex == index) {
@@ -100,7 +98,7 @@ bool Gen11::processKext(KernelPatcher &patcher, size_t index, mach_vm_address_t 
 			//{"__ZN31AppleIntelFramebufferController16disableVDDForAuxEP14AppleIntelPort",disableVDDForAux2, this->odisableVDDForAux2},
 			{"__ZN31AppleIntelFramebufferController15hwSetPanelPowerEj",hwSetPanelPower, this->ohwSetPanelPower},
 			{"__ZN14AppleIntelPort12linkTrainingEP18AGDCDPPortConfig_t",linkTraining, this->olinkTraining},
-			//{"__ZN21AppleIntelFramebuffer19getPixelInformationEiiiP18IOPixelInformation",fgetPixelInformation, this->ofgetPixelInformation},
+			{"__ZN21AppleIntelFramebuffer19getPixelInformationEiiiP18IOPixelInformation",fgetPixelInformation, this->ofgetPixelInformation},
 			{"__ZN21AppleIntelDisplayPath8initHDCPEv", dovoid},
 			//{"__ZN15AppleIntelPlane17configurePlaneCUSEP19FlipTransactionArgs10IGColorCtl",dovoid},
 			//{"__ZN15AppleIntelPlane18configurePlaneiCSCEP19FlipTransactionArgs10IGColorCtl",dovoid},
@@ -252,7 +250,7 @@ bool Gen11::processKext(KernelPatcher &patcher, size_t index, mach_vm_address_t 
 			{"__ZN14AppleIntelPort7readAUXEjPvj",readAUX, this->oreadAUX},
 			//{"__ZN21AppleIntelFramebuffer12getAttributeEjPm",fgetAttribute, this->ofgetAttribute},
 			{"__ZN21AppleIntelFramebuffer12setAttributeEjm",fsetAttribute, this->ofsetAttribute},
-			//{"__ZN21AppleIntelFramebuffer19getPixelInformationEiiiP18IOPixelInformation",fgetPixelInformation, this->ofgetPixelInformation},
+			{"__ZN21AppleIntelFramebuffer19getPixelInformationEiiiP18IOPixelInformation",fgetPixelInformation, this->ofgetPixelInformation},
 			//{"__ZN15AppleIntelPlane18configurePlaneiCSCEP19FlipTransactionArgs10IGColorCtl",dovoid},
 			//{"__ZN15AppleIntelPlane17configurePlaneCUSEP19FlipTransactionArgs10IGColorCtl",dovoid},
 			{"__ZN21AppleIntelDisplayPath8initHDCPEv", dovoid},
@@ -567,78 +565,78 @@ bool Gen11::processKext(KernelPatcher &patcher, size_t index, mach_vm_address_t 
 		return true;
 		
 		
-    } else if (kextG11HWT.loadIndex == index || kextG11HWTe.loadIndex == index) {
+	} else if (kextG11HWT.loadIndex == index || kextG11HWTe.loadIndex == index) {
 		//tgl
 		auto kext=kextG11HWT.loadIndex == index ? kextG11HWT: kextG11HWTe;
 		
 		
 		KernelPatcher::RouteRequest requests[] = {
-			 
-			 {"__ZN16IntelAccelerator19PAVPCommandCallbackE22PAVPSessionCommandID_tjPjb", wrapPavpSessionCallback0, this->orgPavpSessionCallback0},
-			 {"__ZN16IntelAccelerator18setAsyncSliceCountE13IGSliceConfig",setAsyncSliceCount2, this->osetAsyncSliceCount2},
-			 {"__ZN16IntelAccelerator14setSliceConfigE13IGSliceConfig",setSliceConfig, this->osetSliceConfig},
-			 {"__ZN16IntelAccelerator19startGraphicsEngineEv",startGraphicsEngine, this->ostartGraphicsEngine},
-			 {"__ZN13IGHardwareGuC16initSchedControlEv",initSchedControl, this->oinitSchedControl},
-			 {"__ZN20IGSharedMappedBuffer11withOptionsEP11IGAccelTaskmjj",IGSharedMappedBufferwithOptions, this->oIGSharedMappedBufferwithOptions},
-			 {"__ZNK20IGSharedMappedBuffer17getVirtualAddressEv",fgetVirtualAddress, this->ofgetVirtualAddress},
-			 {"__ZNK14IGMappedBuffer20getGPUVirtualAddressEv",fgetGPUVirtualAddress, this->ofgetGPUVirtualAddress},
-			 {"__ZN16IntelAccelerator13SafeForceWakeEbj",SafeForceWake, this->oSafeForceWake},
-			 {"__ZN20IGSharedMappedBuffer4freeEv",IGSharedMappedBufferfree, this->oIGSharedMappedBufferfree},
-			 {"__ZN13IGHardwareGuC13loadGuCBinaryEv",loadGuCBinary, this->oloadGuCBinary},
-			 {"__ZN13IGHardwareGuC15hostToGuCActionEPKjjiPj",hostToGuCAction, this->ohostToGuCAction},
+			
+			{"__ZN16IntelAccelerator19PAVPCommandCallbackE22PAVPSessionCommandID_tjPjb", wrapPavpSessionCallback0, this->orgPavpSessionCallback0},
+			{"__ZN16IntelAccelerator18setAsyncSliceCountE13IGSliceConfig",setAsyncSliceCount2, this->osetAsyncSliceCount2},
+			{"__ZN16IntelAccelerator14setSliceConfigE13IGSliceConfig",setSliceConfig, this->osetSliceConfig},
+			{"__ZN16IntelAccelerator19startGraphicsEngineEv",startGraphicsEngine, this->ostartGraphicsEngine},
+			{"__ZN13IGHardwareGuC16initSchedControlEv",initSchedControl, this->oinitSchedControl},
+			{"__ZN20IGSharedMappedBuffer11withOptionsEP11IGAccelTaskmjj",IGSharedMappedBufferwithOptions, this->oIGSharedMappedBufferwithOptions},
+			{"__ZNK20IGSharedMappedBuffer17getVirtualAddressEv",fgetVirtualAddress, this->ofgetVirtualAddress},
+			{"__ZNK14IGMappedBuffer20getGPUVirtualAddressEv",fgetGPUVirtualAddress, this->ofgetGPUVirtualAddress},
+			{"__ZN16IntelAccelerator13SafeForceWakeEbj",SafeForceWake, this->oSafeForceWake},
+			{"__ZN20IGSharedMappedBuffer4freeEv",IGSharedMappedBufferfree, this->oIGSharedMappedBufferfree},
+			{"__ZN13IGHardwareGuC13loadGuCBinaryEv",loadGuCBinary, this->oloadGuCBinary},
+			{"__ZN13IGHardwareGuC15hostToGuCActionEPKjjiPj",hostToGuCAction, this->ohostToGuCAction},
 			//{"__ZN13IGHardwareGuC16setupContextPoolEi",setupContextPool, this->osetupContextPool},
-			 {"__ZN12IGScheduler412loadFirmwareEv",loadFirmware, this->oloadFirmware},
+			{"__ZN12IGScheduler412loadFirmwareEv",loadFirmware, this->oloadFirmware},
 			
 			/*{"__ZN13IGHardwareGuC15allocDoorbellIdE25UK_GEN11_CONTEXT_PRIORITY",allocDoorbellId, this->oallocDoorbellId},
-			{"__ZN13IGHardwareGuC15stealDoorbellIdEv",stealDoorbellId, this->ostealDoorbellId},
-			{"__ZN13IGHardwareGuC18setDoorbellPinningEtb",setDoorbellPinning, this->osetDoorbellPinning},
-			{"__ZN13IGHardwareGuC17releaseDoorbellIdEt",releaseDoorbellId, this->oreleaseDoorbellId},
-			{"__ZN13IGHardwareGuC15acquireDoorbellEP35UK_GEN11_GUC_CONTEXT_DESCRIPTOR_RECb",acquireDoorbell, this->oacquireDoorbell},
-			{"__ZN13IGHardwareGuC15releaseDoorbellEP35UK_GEN11_GUC_CONTEXT_DESCRIPTOR_REC",releaseDoorbell, this->oreleaseDoorbell},
-			*/
+			 {"__ZN13IGHardwareGuC15stealDoorbellIdEv",stealDoorbellId, this->ostealDoorbellId},
+			 {"__ZN13IGHardwareGuC18setDoorbellPinningEtb",setDoorbellPinning, this->osetDoorbellPinning},
+			 {"__ZN13IGHardwareGuC17releaseDoorbellIdEt",releaseDoorbellId, this->oreleaseDoorbellId},
+			 {"__ZN13IGHardwareGuC15acquireDoorbellEP35UK_GEN11_GUC_CONTEXT_DESCRIPTOR_RECb",acquireDoorbell, this->oacquireDoorbell},
+			 {"__ZN13IGHardwareGuC15releaseDoorbellEP35UK_GEN11_GUC_CONTEXT_DESCRIPTOR_REC",releaseDoorbell, this->oreleaseDoorbell},
+			 */
 			
-			 // {"__ZN13IGHardwareGuC26setupAdditionalDataStructsEv",setupAdditionalDataStructs, this->osetupAdditionalDataStructs},
+			// {"__ZN13IGHardwareGuC26setupAdditionalDataStructsEv",setupAdditionalDataStructs, this->osetupAdditionalDataStructs},
 			// {"__ZN22IGHardwareGuCWorkQueue11withOptionsEP22IOGraphicsAccelerator2jP37UK_GEN11_SCHED_PROCESS_DESCRIPTOR_REC",IGHardwareGuCWorkQueuewithOptions, this->oIGHardwareGuCWorkQueuewithOptions},
-			 //{"__ZN13IGHardwareGuC14allocContextIdEyb",allocContextId, this->oallocContextId},
-			 
+			//{"__ZN13IGHardwareGuC14allocContextIdEyb",allocContextId, this->oallocContextId},
+			
 			//{"__ZN18IGAccelDisplayPipe19validateTransactionEP30IOAccelDisplayPipeTransaction2",validateTransaction, this->ovalidateTransaction},
 			
-			 /*
+			/*
 			 {"__ZN13IGHardwareGuC16releaseUkContextEj",dovoid},
 			 {"__ZN13IGHardwareGuC33deregisterCommandTransportBuffersEv",dovoid},
 			 {"__ZN13IGHardwareGuC15createUkContextEy25UK_GEN11_CONTEXT_PRIORITY",udozero},
 			 {"__ZN13IGHardwareGuC31registerCommandTransportBuffersEv",ldone},
-			  */
+			 */
 			// {"__ZN13IGHardwareGuC16setupContextPoolEi",ldone},
-			 
-			 //{"__ZN20IGHardwareRingBuffer12waitForSpaceEj",waitForSpace, this->owaitForSpace},
-			 //{"__ZN16IntelAccelerator31initHardwareStatusPageRegistersEv",initHardwareStatusPageRegisters, this->oinitHardwareStatusPageRegisters},
-			 
-			 // https://elixir.bootlin.com/linux/v5.5.19/source/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
+			
+			//{"__ZN20IGHardwareRingBuffer12waitForSpaceEj",waitForSpace, this->owaitForSpace},
+			//{"__ZN16IntelAccelerator31initHardwareStatusPageRegistersEv",initHardwareStatusPageRegisters, this->oinitHardwareStatusPageRegisters},
+			
+			// https://elixir.bootlin.com/linux/v5.5.19/source/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
 			
 			
-			 
-			 /*
+			
+			/*
 			 {"__ZN13IGHardwareGuC13initDoorbellsEv",dovoid},
 			 {"__ZN5IGGuC16ringAllDoorbellsEv",dovoid},
 			 {"__ZN5IGGuC12ringDoorbellE10IGHwCsType",dovoid},
 			 {"__ZN13IGHardwareGuC17reacquireDoorbellEj",reacquireDoorbell},
 			 {"__ZN20IGHardwareRingBuffer12submitToRingEv.cold.1",dovoid},
 			 */
-			 
-			 //{"__ZN16IntelAccelerator15configureDeviceEP11IOPCIDevice",fconfigureDevice, this->ofconfigureDevice},
-			 //{"__ZN15IGMemoryManager16initDeviceMemoryEv",finitDeviceMemory, this->ofinitDeviceMemory},
-			 //{"__ZN5IGGuC18checkWOPCMSettingsEmR14IOVirtualRange",checkWOPCMSettings, this->ocheckWOPCMSettings},
-			 
+			
+			//{"__ZN16IntelAccelerator15configureDeviceEP11IOPCIDevice",fconfigureDevice, this->ofconfigureDevice},
+			//{"__ZN15IGMemoryManager16initDeviceMemoryEv",finitDeviceMemory, this->ofinitDeviceMemory},
+			//{"__ZN5IGGuC18checkWOPCMSettingsEmR14IOVirtualRange",checkWOPCMSettings, this->ocheckWOPCMSettings},
+			
 			//{"__ZN13IGHardwareGuC31registerCommandTransportBuffersEv",registerCommandTransportBuffers, this->oregisterCommandTransportBuffers},
-			 //{"__ZN13IGHardwareGuC33deregisterCommandTransportBuffersEv",deregisterCommandTransportBuffers, this->oderegisterCommandTransportBuffers},
-			 //{"__ZNK11IGHashTableIjj12IGHashTraitsIjE25IGIOMallocAllocatorPolicyE8containsERKj",IGHashTablecontains, this->oIGHashTablecontains},
-			 //{"__ZN11IGHashTableIjj12IGHashTraitsIjE25IGIOMallocAllocatorPolicyEixERKj",IGHashTableoperator, this->oIGHashTableoperator},
-			 //{"__ZN13IGHardwareGuC31DetachContextDescFromGucContextERK21SGfxContextDescriptor",DetachContextDescFromGucContext, this->oDetachContextDescFromGucContext},
-			 //{"__ZN13IGHardwareGuC16releaseUkContextEj",releaseUkContext, this->oreleaseUkContext},
-			 //{"__ZN13IGHardwareGuC29AttachContextDescToGucContextERK21SGfxContextDescriptor",AttachContextDescToGucContext, this->oAttachContextDescToGucContext},
-			 
-		 };
+			//{"__ZN13IGHardwareGuC33deregisterCommandTransportBuffersEv",deregisterCommandTransportBuffers, this->oderegisterCommandTransportBuffers},
+			//{"__ZNK11IGHashTableIjj12IGHashTraitsIjE25IGIOMallocAllocatorPolicyE8containsERKj",IGHashTablecontains, this->oIGHashTablecontains},
+			//{"__ZN11IGHashTableIjj12IGHashTraitsIjE25IGIOMallocAllocatorPolicyEixERKj",IGHashTableoperator, this->oIGHashTableoperator},
+			//{"__ZN13IGHardwareGuC31DetachContextDescFromGucContextERK21SGfxContextDescriptor",DetachContextDescFromGucContext, this->oDetachContextDescFromGucContext},
+			//{"__ZN13IGHardwareGuC16releaseUkContextEj",releaseUkContext, this->oreleaseUkContext},
+			//{"__ZN13IGHardwareGuC29AttachContextDescToGucContextERK21SGfxContextDescriptor",AttachContextDescToGucContext, this->oAttachContextDescToGucContext},
+			
+		};
 		PANIC_COND(!patcher.routeMultipleLong(index, requests, address, size), "nblue","Failed to route symbols");
 		
 		// 8 subslices
@@ -653,36 +651,33 @@ bool Gen11::processKext(KernelPatcher &patcher, size_t index, mach_vm_address_t 
 		static const uint8_t f3[] = {0x8b, 0x3e, 0x81, 0xff, 0xee, 0xbe, 0xaf, 0xde, 0x7f, 0x15, 0x81, 0xff, 0x86, 0x80, 0x40, 0x9a, 0x74, 0x2d};
 		static const uint8_t r3[] = {0x8b, 0x3e, 0x81, 0xff, 0xee, 0xbe, 0xaf, 0xde, 0x90, 0x90, 0x81, 0xff, 0x86, 0x80, 0x40, 0x9a, 0xeb, 0x2d};
 		
-		// 12 to 8 subslices + L3BankCount = 8
-		static const uint8_t f3a[] = {0x83, 0xfe, 0x01, 0x75, 0x59, 0x83, 0xfa, 0x0c};
-		static const uint8_t r3a[] = {0x83, 0xfe, 0x01, 0x75, 0x59, 0x83, 0xfa, 0x08};
+		// L3BankCount = 8
+		static const uint8_t f3a[] = {0x83, 0xfe, 0x01, 0x75, 0x59, 0x83, 0xfa, 0x0c, 0x75, 0x54, 0x41, 0xc7, 0x87, 0x64, 0x11, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00};
+		static const uint8_t r3a[] = {0x83, 0xfe, 0x01, 0x90, 0x90, 0x83, 0xfa, 0x0c, 0x90, 0x90, 0x41, 0xc7, 0x87, 0x64, 0x11, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00};
 		
 		//ringmask
 		static const uint8_t f4[] = {0x41, 0x80, 0x8d, 0x00, 0x13, 0x00, 0x00, 0x3f};
 		static const uint8_t r4[] = {0x41, 0x80, 0x8d, 0x00, 0x13, 0x00, 0x00, 0x1f};
 		
-		
 		//blit3d mem align patch
 		static const uint8_t f5[] = {0x40, 0xd2, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 		static const uint8_t r5[] = {0x00, 0xe0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-
-
+		
+		LookupPatchPlus const patches[] = {
+			{&kext, f2, r2, arrsize(f2),	1},
+			{&kext, f2a, r2a, arrsize(f2a),	1},
+			{&kext, f3, r3, arrsize(f3),	1},
+			{&kext, f3a, r3a, arrsize(f3a),	1},
+			{&kext, f4, r4, arrsize(f4),	1},
+			{&kext, f5, r5, arrsize(f5),	1},
+			
+		};
+		PANIC_COND(!LookupPatchPlus::applyAll(patcher, patches , address, size), "nblue", "kextG11HWT Failed to apply patches!");
 		
 		
-			LookupPatchPlus const patches[] = {
-				{&kext, f2, r2, arrsize(f2),	1},
-				{&kext, f2a, r2a, arrsize(f2a),	1},
-				{&kext, f3, r3, arrsize(f3),	1},
-				{&kext, f3a, r3a, arrsize(f3a),	1},
-				{&kext, f4, r4, arrsize(f4),	1},
-				{&kext, f5, r5, arrsize(f5),	1},
-				
-			};
-			PANIC_COND(!LookupPatchPlus::applyAll(patcher, patches , address, size), "nblue", "kextG11HWT Failed to apply patches!");
-
+		
 		
 		DBGLOG("nblue", "Loaded AppleIntelTGLGraphics!");
-
 		return true;
 	}
 
@@ -9781,22 +9776,23 @@ u8 drm_dp_link_rate_to_bw_code(int link_rate)
 	}
 }
 
+
 static void intel_ddi_init_dp_buf_reg(struct intel_display *display, struct intel_dp *intel_dp)
 {
-	
+	u32 ddi_buf_ctl = intel_de_read(display, DDI_BUF_CTL(display->port0));
 
 	intel_dp->DP = DDI_PORT_WIDTH(display->panel.vbt.edp.lanes) |
 		DDI_BUF_TRANS_SELECT(0);
 
-	if (display->child0->lane_reversal)
+	if (display->child0->lane_reversal || ddi_buf_ctl & DDI_BUF_PORT_REVERSAL)
 		intel_dp->DP |= DDI_BUF_PORT_REVERSAL;
 	
-	if (display->panel.vbt.edp.lanes==4)
+	
+	
+	if (DISPLAY_VER(display) < 11 && ddi_buf_ctl & DDI_A_4_LANES /*display->panel.vbt.edp.lanes==4*/)
 		intel_dp->DP |= DDI_A_4_LANES;
 	
-/*	if (dig_port->ddi_a_4_lanes)
-		intel_dp->DP |= DDI_A_4_LANES;
-
+/*
 	if (DISPLAY_VER(display) >= 14) {
 		if (intel_dp_is_uhbr(crtc_state))
 			intel_dp->DP |= DDI_BUF_PORT_DATA_40BIT;
@@ -11016,7 +11012,6 @@ bool tgl_ddi_pre_enable_dp(struct intel_display *display, struct intel_crtc_stat
 	if (!is_mst && intel_dp_is_uhbr(crtc_state)) {
 		ret = drm_dp_dpcd_write_payload(display, 1, 0, crtc_state->dp_m_n.tu);
 	}
-
 	
 	return ret;
 }
@@ -12776,10 +12771,10 @@ void Gen11::SetupParams2 (void *param_2, CRTCParams *param_3)
 		setpc=0;
 
 		param_3->TRANS_CLK_SEL=intel_ddi_enable_transcoder_clock(crtc_state,true);
-		/*param_3->TRANS_MSA_MISC =intel_ddi_set_dp_msa(display, false);
+		param_3->TRANS_MSA_MISC =intel_ddi_set_dp_msa(display, false);
 		param_3->TRANS_DDI_FUNC_CTL= intel_ddi_transcoder_func_reg_val_get();
 		param_3->PIPE_MISC=bdw_set_pipe_misc();
-		param_3->TRANSCONF= 0xc0000024;*/
+		param_3->TRANSCONF= 0xc0000024;
 		
 		/*int fScanoutHeight=getMember<int>(param_2, kexticl ? 0x2fc : 0xfc);
 		int fLinkScanoutWidth=getMember<int>(param_2, kexticl ? 0x2f8 : 0xf8);
@@ -12833,6 +12828,7 @@ int Gen11::fgetPixelInformation(void *that,int param_1,int param_2,int param_3,v
 	uint32_t fbNum = getMember<uint32_t>(that, 0x1dc);
 	if (fbNum==0) return 0;
 	return ret;
+	
 }
 
 
