@@ -135,10 +135,10 @@ bool Gen11::processKext(KernelPatcher &patcher, size_t index, mach_vm_address_t 
 			{"__ZN31AppleIntelFramebufferController9hwSetModeEP21AppleIntelFramebufferP21AppleIntelDisplayPathiPK29IODetailedTimingInformationV2",hwSetMode, this->ohwSetMode},*/
 			
 			
-			//{"__ZN21AppleIntelFramebuffer17prepareToExitWakeEv",dovoid},
-			/*{"__ZN21AppleIntelFramebuffer18prepareToExitSleepEv",dovoid},
+			{"__ZN21AppleIntelFramebuffer17prepareToExitWakeEv",dovoid},
+			{"__ZN21AppleIntelFramebuffer18prepareToExitSleepEv",dovoid},
 			{"__ZN21AppleIntelFramebuffer19prepareToEnterSleepEv",dovoid},
-			{"__ZN21AppleIntelFramebuffer18prepareToEnterWakeEv",dovoid},*/
+			{"__ZN21AppleIntelFramebuffer18prepareToEnterWakeEv",dovoid},
 			
 			
 		};
@@ -189,9 +189,9 @@ bool Gen11::processKext(KernelPatcher &patcher, size_t index, mach_vm_address_t 
 		LookupPatchPlus const patches[] = {
 			{&kextG11FB, f7, r7, arrsize(f7),    1},
 			{&kextG11FB, f7a, r7a, arrsize(f7a),    1},
-			{&kextG11FB, f9, r9, arrsize(f9),    1},
-			{&kextG11FB, f9b, r9b, arrsize(f9b),    1},
-			{&kextG11FB, f9c, r9c, arrsize(f9c),    1},
+			//{&kextG11FB, f9, r9, arrsize(f9),    1},
+			//{&kextG11FB, f9b, r9b, arrsize(f9b),    1},
+			//{&kextG11FB, f9c, r9c, arrsize(f9c),    1},
 			{&kextG11FB, f10, r10, arrsize(f10),    1},
 			{&kextG11FB, f24b, r24b, arrsize(f24b),    12},
 			{&kextG11FB, f24c, r24c, arrsize(f24c),    1},
@@ -560,9 +560,9 @@ bool Gen11::processKext(KernelPatcher &patcher, size_t index, mach_vm_address_t 
 		LookupPatchPlus const patches[] = {
 			{&kextG11HW, f2, r2, arrsize(f2),	1},
 			{&kextG11HW, f2a, r2a, arrsize(f2a),	1},
-			{&kextG11HW, f3, r3, arrsize(f3),	1},
-			{&kextG11HW, f3a, r3a, arrsize(f3a),	1},
-			{&kextG11HW, f3b, r3b, arrsize(f3b),	1},
+			//{&kextG11HW, f3, r3, arrsize(f3),	1},
+			//{&kextG11HW, f3a, r3a, arrsize(f3a),	1},
+			//{&kextG11HW, f3b, r3b, arrsize(f3b),	1},
 			{&kextG11HW, f4, r4, arrsize(f4),	22},
 			{&kextG11HW, f5a, r5a, arrsize(f5a),	1},
 			{&kextG11HW, f5b, r5b, arrsize(f5b),	1},
@@ -1134,6 +1134,7 @@ uint32_t Gen11::raReadRegister32(void *that,unsigned long param_1)
 	if (kexticl) param_1=cAddress(param_1);
 	return FunctionCast(raReadRegister32, callback->oraReadRegister32)(that,param_1);
 };
+
 void Gen11::raWriteRegister32(void *that,unsigned long param_1, UInt32 param_2)
 {
 	if (that==nullptr) that=ccont;
