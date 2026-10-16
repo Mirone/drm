@@ -108,8 +108,8 @@ bool Gen11::processKext(KernelPatcher &patcher, size_t index, mach_vm_address_t 
 			{"__ZN31AppleIntelFramebufferController10enablePipeEP21AppleIntelFramebufferP21AppleIntelDisplayPathPK29IODetailedTimingInformationV2",enablePipe, this->oenablePipe},
 			{"__ZN21AppleIntelFramebuffer11initVRRCapsEv",initVRRCaps, this->oinitVRRCaps},
 			{"__ZN14AppleIntelPort19displayPortReadEDIDEjjPhj",displayPortReadEDID, this->odisplayPortReadEDID},
-			{"__ZN15AppleIntelPlane14configurePlaneEP19FlipTransactionArgs",configurePlane, this->oconfigurePlane},
-			{"__ZN15AppleIntelPlane10setupPlaneEP21AppleIntelDisplayPathi",setupPlane, this->osetupPlane},
+			//{"__ZN15AppleIntelPlane14configurePlaneEP19FlipTransactionArgs",configurePlane, this->oconfigurePlane},
+			//{"__ZN15AppleIntelPlane10setupPlaneEP21AppleIntelDisplayPathi",setupPlane, this->osetupPlane},
 			{"__ZN19AppleIntelPowerWell17enablePowerWellPGEj.cold.1", dovoid},
 			{"__ZN31AppleIntelFramebufferController12disableHWDC6Ev",disableHWDC6, this->odisableHWDC6},
 			{"__ZN14AppleIntelPort12getPortByDDIEj",getPortByDDI, this->ogetPortByDDI},
@@ -148,8 +148,14 @@ bool Gen11::processKext(KernelPatcher &patcher, size_t index, mach_vm_address_t 
 		static const uint8_t f7[]= {0x83, 0x78, 0x08, 0x00, 0x0f, 0x84, 0x32, 0x01, 0x00, 0x00};
 		static const uint8_t r7[]= {0x83, 0x78, 0x08, 0x00, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90};
 		
-		static const uint8_t f7a[]= {0x80, 0x7d, 0xd7, 0x00, 0x75, 0x23};
-		static const uint8_t r7a[]= {0x80, 0x7d, 0xd7, 0x00, 0xeb, 0x23};
+		//static const uint8_t f7a[]= {0x80, 0x7d, 0xd7, 0x00, 0x75, 0x23};
+		//static const uint8_t r7a[]= {0x80, 0x7d, 0xd7, 0x00, 0xeb, 0x23};
+		
+		//tahoe
+		static const uint8_t f7a[]= {0xf6, 0x45, 0xd7, 0x01, 0x0f, 0x84, 0xe0, 0x01, 0x00, 0x00};
+		static const uint8_t r7a[]= {0xf6, 0x45, 0xd7, 0x01, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90};
+		
+		
 		
 		//builtin
 		static const uint8_t f9[]= {0x48, 0x8b, 0xb8, 0x40, 0x04, 0x00, 0x00, 0xf6, 0x47, 0x14, 0x08, 0x75, 0x0a};
@@ -192,13 +198,17 @@ bool Gen11::processKext(KernelPatcher &patcher, size_t index, mach_vm_address_t 
 			//{&kextG11FB, f9, r9, arrsize(f9),    1},
 			//{&kextG11FB, f9b, r9b, arrsize(f9b),    1},
 			//{&kextG11FB, f9c, r9c, arrsize(f9c),    1},
-			{&kextG11FB, f10, r10, arrsize(f10),    1},
-			{&kextG11FB, f24b, r24b, arrsize(f24b),    12},
+			//{&kextG11FB, f10, r10, arrsize(f10),    1},
+			
+			/*{&kextG11FB, f24b, r24b, arrsize(f24b),    12},
 			{&kextG11FB, f24c, r24c, arrsize(f24c),    1},
 			{&kextG11FB, f24d, r24d, arrsize(f24d),    10},
 			{&kextG11FB, f24e, r24e, arrsize(f24e),    28},
 			{&kextG11FB, f24f, r24f, arrsize(f24f),    5},
-			{&kextG11FB, f25, r25, arrsize(f25),    7},
+			*/
+			//{&kextG11FB, f25, r25, arrsize(f25),    7},
+			
+			{&kextG11FB, f25, r25, arrsize(f25),    2},
 			
 		};
 		PANIC_COND(!LookupPatchPlus::applyAll(patcher, patches , address, size), "nblue", "kextG11FB Failed to apply patches!");
