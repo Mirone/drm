@@ -136,7 +136,6 @@ bool NBlue::wrapAddDrivers(void* const self, OSArray* const array, const bool do
 	vfs_context_rele(ctxt);
 	if (!err) ok=1;
 	
-	
 	if (ok && (NBlue::callback->tglid || NBlue::callback->iclid)) { //not running mac os installer
 		
 		
