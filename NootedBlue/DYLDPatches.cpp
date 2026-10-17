@@ -88,11 +88,10 @@ void DYLDPatches::wrapCsValidatePage(vnode *vp, memory_object_t pager, memory_ob
 			if (!ok && NBlue::callback->iclid) {
 				if ((!strncmp(path, libMTLIGCCompilerPluginPath, arrsize(libMTLIGCCompilerPluginPath)) )) {
 					const DYLDPatch patches[] = {
-						{klibMTLIGCCompilerPluginOriginal, klibMTLIGCCompilerPluginPatched, "klibMTLIGCCompilerPluginOriginal"},
+						{klibMTLIGCCompilerPluginOriginal2b, klibMTLIGCCompilerPluginOriginal2, "path"},
 						{klibMTLIGCCompilerPluginOriginal4, klibMTLIGCCompilerPluginPatched4, "klibMTLIGCCompilerPluginOriginal4"},
 						{klibMTLIGCCompilerPluginOriginal5, klibMTLIGCCompilerPluginPatched5, "klibMTLIGCCompilerPluginOriginal5"},
 						{klibMTLIGCCompilerPluginOriginal6b, klibMTLIGCCompilerPluginPatched6b, "klibMTLIGCCompilerPluginOriginal6b"},
-						{klibMTLIGCCompilerPluginOriginal7, klibMTLIGCCompilerPluginPatched7, "klibMTLIGCCompilerPluginOriginal7"},
 					};
 					DYLDPatch::applyAll(patches, const_cast<void *>(data), PAGE_SIZE);
 					return;
@@ -122,12 +121,11 @@ void DYLDPatches::wrapCsValidatePage(vnode *vp, memory_object_t pager, memory_ob
 				
 				if ((!strncmp(path, libMTLIGCCompilerPluginPath, arrsize(libMTLIGCCompilerPluginPath)) )) {
 					const DYLDPatch patches[] = {
-						{klibMTLIGCCompilerPluginOriginal, klibMTLIGCCompilerPluginPatched, "klibMTLIGCCompilerPluginOriginal"},
-						{klibMTLIGCCompilerPluginOriginal2, sle ? klibMTLIGCCompilerPluginPatched2:klibMTLIGCCompilerPluginPatched3, "klibMTLIGCCompilerPluginOriginal2"},
+						{klibMTLIGCCompilerPluginOriginal2, sle ? klibMTLIGCCompilerPluginPatched2:klibMTLIGCCompilerPluginPatched3, "path"},
+						{klibMTLIGCCompilerPluginOriginal2b, sle ? klibMTLIGCCompilerPluginPatched2:klibMTLIGCCompilerPluginPatched3, "path"},
 						{klibMTLIGCCompilerPluginOriginal4, klibMTLIGCCompilerPluginPatched4, "klibMTLIGCCompilerPluginOriginal4"},
 						{klibMTLIGCCompilerPluginOriginal5, klibMTLIGCCompilerPluginPatched5, "klibMTLIGCCompilerPluginOriginal5"},
-						{klibMTLIGCCompilerPluginOriginal6, klibMTLIGCCompilerPluginPatched6, "klibMTLIGCCompilerPluginOriginal6"},
-						{klibMTLIGCCompilerPluginOriginal7, klibMTLIGCCompilerPluginPatched7, "klibMTLIGCCompilerPluginOriginal7"},
+						{klibMTLIGCCompilerPluginOriginal6, klibMTLIGCCompilerPluginPatched6, "klibMTLIGCCompilerPluginOriginal6b"},
 					};
 					DYLDPatch::applyAll(patches, const_cast<void *>(data), PAGE_SIZE);
 					return;
