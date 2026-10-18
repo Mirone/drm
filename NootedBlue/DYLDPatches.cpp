@@ -44,8 +44,6 @@ void DYLDPatches::wrapCsValidatePage(vnode *vp, memory_object_t pager, memory_ob
 	int pathlen = PATH_MAX;
 	if (vn_getpath(vp, path, &pathlen) != 0) { return; }
 	
-
-	
 	if (!UserPatcher::matchSharedCachePath(path)) {
 		
 		if ((!strncmp(path, binarydisplaypolicyd, arrsize(binarydisplaypolicyd))) )
@@ -91,7 +89,7 @@ void DYLDPatches::wrapCsValidatePage(vnode *vp, memory_object_t pager, memory_ob
 						{klibMTLIGCCompilerPluginOriginal2b, klibMTLIGCCompilerPluginOriginal2, "path"},
 						{klibMTLIGCCompilerPluginOriginal4, klibMTLIGCCompilerPluginPatched4, "klibMTLIGCCompilerPluginOriginal4"},
 						{klibMTLIGCCompilerPluginOriginal5, klibMTLIGCCompilerPluginPatched5, "klibMTLIGCCompilerPluginOriginal5"},
-						{klibMTLIGCCompilerPluginOriginal6b, klibMTLIGCCompilerPluginPatched6b, "klibMTLIGCCompilerPluginOriginal6b"},
+						{klibMTLIGCCompilerPluginOriginal6, klibMTLIGCCompilerPluginPatched6, "klibMTLIGCCompilerPluginOriginal6b"},
 					};
 					DYLDPatch::applyAll(patches, const_cast<void *>(data), PAGE_SIZE);
 					return;
